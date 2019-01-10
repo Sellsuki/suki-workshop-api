@@ -3,7 +3,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 
 const app = express().use(bodyParser.json())
-const port = 3000
+const port = process.env.PORT || 3000
 
 const dbPromise = sqlite.open('./database.sqlite', { Promise: Promise })
 
