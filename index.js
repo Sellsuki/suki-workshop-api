@@ -10,7 +10,8 @@ const dbPromise = sqlite.open('./database.sqlite', { Promise: Promise })
 app.get('/users', async (req, res) => {
   try {
     let db = await dbPromise
-    let result = await db.all('SELECT * FROM user')
+    let sql = 'SELECT * FROM user'
+    let result = await db.all(sql)
     res.send(result)
   } catch (e) {
     console.error(e.message)
@@ -20,7 +21,14 @@ app.get('/users', async (req, res) => {
 
 app.post('/user', async (req, res) => {
   try {
-    res.send(req.body) 
+    let { name, last_name, age, description } = req.body
+    let db = await dbPromise
+    let sql = `
+      INSERT INTO user (name, last_name, age, description)
+      VALUES ('${name}', '${last_name}', ${age}, '${description}')
+    `
+    await db.run(sql)
+    res.send({ success: true })
   } catch (e) {
     console.error(e.message)
     res.send(e.message)
