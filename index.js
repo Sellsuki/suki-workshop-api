@@ -54,4 +54,21 @@ app.post('/user', async (req, res) => {
   }
 })
 
+app.post('/user/:id', async (req, res) => {
+  try {
+    let { name, last_name, age, description } = req.body
+    let db = await dbPromise
+    let sql = `
+      UPDATE user
+      SET name = '${name}', last_name = '${last_name}', age = ${age}, description = '${description}'
+      WHERE id = ${req.params.id};
+    `
+    await db.run(sql)
+    res.send({ success: true })
+  } catch (e) {
+    console.error(e.message)
+    res.send(e.message)
+  }
+})
+
 app.listen(port, () => console.log(`Listening on port ${port}!`))
