@@ -26,6 +26,18 @@ app.get('/users', async (req, res) => {
   }
 })
 
+app.get('/user/:id', async (req, res) => {
+  try {
+    let db = await dbPromise
+    let sql = `SELECT * FROM user WHERE id = ${req.params.id}`
+    let result = await db.get(sql)
+    res.send(result)
+  } catch (e) {
+    console.error(e.message)
+    res.send(e.message)
+  }
+})
+
 app.post('/user', async (req, res) => {
   try {
     let { name, last_name, age, description } = req.body
