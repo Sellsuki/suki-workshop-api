@@ -1,11 +1,18 @@
 const sqlite = require('sqlite')
 const express = require('express')
 const bodyParser = require('body-parser')
+const cors = require('cors')
 
-const app = express().use(bodyParser.json())
+const app = express()
 const port = process.env.PORT || 3000
-
 const dbPromise = sqlite.open('./database.sqlite', { Promise: Promise })
+
+app.use(bodyParser.json())
+app.use(cors())
+
+app.get('/', (req, res) => {
+  res.send('Suki Workshop API: Server is live.')
+})
 
 app.get('/users', async (req, res) => {
   try {
